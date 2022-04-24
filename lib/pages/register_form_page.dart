@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+// import 'package:android_lab7/pages/user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
   const RegisterFormPage({Key? key}) : super(key: key);
@@ -41,8 +42,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     super.dispose();
   }
 
-  void _fieldFocusChange(
-      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  void _fieldFocusChange(BuildContext context, FocusNode currentFocus,
+      FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
@@ -71,7 +72,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 hintText: 'What can we reach you?',
                 prefixIcon: Icon(Icons.person),
                 suffixIcon: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       _nameController.clear();
                     },
                     child: Icon(
@@ -87,7 +88,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 // border: OutlineInputBorder(),
               ),
               validator: (value) =>
-                  value == null || value.isEmpty ? "Name is required" : null,
+              value == null || value.isEmpty ? "Name is required" : null,
             ),
             SizedBox(height: 10),
             TextFormField(
@@ -102,13 +103,13 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 helperText: "Phone format: (xxx)xxx-xxxx",
                 prefixIcon: Icon(Icons.call),
                 suffixIcon: GestureDetector(
-                  onTap: (){
-                    _phoneController.clear();
-                  },
+                    onTap: () {
+                      _phoneController.clear();
+                    },
                     child: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                )),
+                      Icons.delete,
+                      color: Colors.red,
+                    )),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     borderSide: BorderSide(color: Colors.black, width: 2.0)),
@@ -225,17 +226,57 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     );
   }
 
-  void _submitForm() {
+  MaterialApp? _submitForm() {
     if (_formKey.currentState!.validate()) {
-      print("fotm is valid");
+      print("Form is valid");
       print('Name - ${_nameController.text}');
       print('Phone - ${_phoneController.text}');
       print('Email - ${_emailController.text}');
-      print('Country - ${_selectedCountry}');
+      print('Country - $_selectedCountry');
       print('Story - ${_storyController.text}');
       print('Pass - ${_passController.text}');
       print('Pass conf - ${_confPassController.text} ');
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SecondScreen()));
     }
+  }
+
+  SecondScreen() {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("User info"),
+      ),
+      body: ListView(
+        children: <Widget>[
+          if(_nameController.text.isNotEmpty)
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text(_nameController.text),
+            ),
+          if(_phoneController.text.isNotEmpty)
+            ListTile(
+              leading: Icon(Icons.call),
+              title: Text(_phoneController.text),
+            ),
+          if(_emailController.text.isNotEmpty)
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text(_emailController.text),
+            ),
+          if(_selectedCountry.isNotEmpty)
+            ListTile(
+              leading: Icon(Icons.map),
+              title: Text(_selectedCountry),
+            ),
+          if(_storyController.text.isNotEmpty)
+            ListTile(
+              leading: Icon(Icons.history),
+              title: Text(_storyController.text),
+            ),
+
+        ],
+      ),
+    );
   }
 
 //   String? _validateName(String value) {
